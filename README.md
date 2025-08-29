@@ -1,61 +1,72 @@
-# Note Application (React + Node + MongoDB)
+# Note Application
 
-Full-stack notes app with OTP/Google auth, JWT-secured notes, React (TypeScript) frontend, Node.js backend, and MongoDB.
+A simple note-taking app where users can create, view, and delete notes after signing up or logging in.
+Go Live : https://note-application-t3lr.vercel.app
 
-## Structure
-- `frontend/` React + Vite (TypeScript)
-- `backend/` Express + Mongoose + JWT
+## Features
 
-## Prerequisites
-- Node 18+
-- MongoDB (Atlas or local)
+- **User Authentication**: Sign up with email/OTP or Google account
+- **Login**: Use email/OTP or Google to access your account
+- **Notes Management**: Create and delete personal notes
+- **Secure**: JWT-based authentication protects your data
 
-## Environment
-- Backend: see `backend/ENVIRONMENT.md`
-- Frontend: see `frontend/ENVIRONMENT.md`
+## Tech Stack
 
-## Local Development
-```bash
-# Backend
-cd backend
-npm install
-cp .env.example .env  # create and fill values if you have an example, else see ENVIRONMENT.md
-npm run dev
+- **Frontend**: React with TypeScript
+- **Backend**: Node.js with Express
+- **Database**: MongoDB
+- **Authentication**: JWT tokens + Google OAuth
 
-# Frontend (new terminal)
-cd frontend
-npm install
-npm run dev
+## Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd Note-Application
+   ```
+
+2. **Set up Backend**
+   ```bash
+   cd backend
+   npm install
+   # Add your .env file with database and Google OAuth credentials
+   npm run dev
+   ```
+
+3. **Set up Frontend**
+   ```bash
+   cd frontend
+   npm install
+   # Add your .env file with API base URL
+   npm run dev
+   ```
+
+4. **Open your browser**
+   - Frontend: http://localhost:5173
+   - Backend: http://localhost:4000
+
+## Environment Variables
+
+### Backend (.env)
 ```
-- Frontend runs on http://localhost:5173
-- Backend runs on http://localhost:4000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+FRONTEND_ORIGIN=http://localhost:5173
+```
 
-## Production (Vercel)
-Both `frontend/` and `backend/` are configured for Vercel deployments.
+### Frontend (.env)
+```
+VITE_API_BASE=http://localhost:4000/api
+VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id
+```
 
-### Backend on Vercel
-- Project root: `backend/`
-- Build Command: `npm run vercel-build`
-- Output: N/A (Serverless)
-- Root `vercel.json` inside `backend/` routes all to `server.js`
-- Set Environment Variables in Vercel:
-  - `MONGODB_URI`
-  - `JWT_SECRET`
-  - `GOOGLE_CLIENT_ID`
-  - `FRONTEND_ORIGIN` (e.g., `https://your-frontend.vercel.app`)
 
-### Frontend on Vercel
-- Project root: `frontend/`
-- Build Command: `npm run vercel-build`
-- Output Directory: `dist`
-- Environment Variables:
-  - `VITE_API_BASE` = `https://your-backend.vercel.app/api`
-  - `VITE_GOOGLE_CLIENT_ID`
+## Project Structure
 
-## Notes
-- CORS is restricted in production to `FRONTEND_ORIGIN`.
-- OTP is shown on screen for development simplicity.
-
-## Testing
-- Build frontend: `cd frontend && npm run build`
-- Build backend: no build required. Run `npm start` locally.
+```
+Note-Application/
+├── backend/          # Node.js API server
+├── frontend/         # React TypeScript app
+└── README.md         # This file
+```
