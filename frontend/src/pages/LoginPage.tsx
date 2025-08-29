@@ -108,16 +108,10 @@ export default function LoginPage() {
 		<div className="page-container">
 			<div className="auth-container">
 				<div className="auth-left">
-					<div className="auth-left-content">
-						<h1>Welcome Back!</h1>
-						<p>Sign in to your account to continue managing your notes and stay organized.</p>
-					</div>
-				</div>
-				
-				<div className="auth-right">
 					<div className="auth-form-container">
 						<div className="logo-container">
 							<img src={topLogo} alt="Logo" />
+							<span className="logo-text">HD</span>
 						</div>
 						
 						<div className="auth-form">
@@ -205,6 +199,10 @@ export default function LoginPage() {
 							</div>
 						</div>
 					</div>
+				</div>
+				
+				<div className="auth-right">
+					{/* Image background is handled by CSS */}
 				</div>
 			</div>
 		</div>

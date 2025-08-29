@@ -113,20 +113,14 @@ export default function SignupPage() {
 		<div className="page-container">
 			<div className="auth-container">
 				<div className="auth-left">
-					<div className="auth-left-content">
-						<h1>Join Us Today!</h1>
-						<p>Create your account and start organizing your thoughts with our powerful note-taking app.</p>
-					</div>
-				</div>
-				
-				<div className="auth-right">
 					<div className="auth-form-container">
 						<div className="logo-container">
 							<img src={topLogo} alt="Logo" />
+							<span className="logo-text">HD</span>
 						</div>
 						
 						<div className="auth-form">
-							<h2>Create Account</h2>
+							<h2>Sign Up</h2>
 							
 							{error && <div className="error">{error}</div>}
 							
@@ -233,6 +227,10 @@ export default function SignupPage() {
 							</div>
 						</div>
 					</div>
+				</div>
+				
+				<div className="auth-right">
+					{/* Image background is handled by CSS */}
 				</div>
 			</div>
 		</div>
