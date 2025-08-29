@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import WelcomePage from './pages/WelcomePage';
+import './pages.css';
 
 export default function App() {
 	return (

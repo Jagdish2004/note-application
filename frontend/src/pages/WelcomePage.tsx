@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, setAuthToken } from '../lib/api';
+import topLogo from '../assets/top.svg';
+import '../pages.css';
 
 type Note = { id?: string; _id?: string; title: string; content: string };
 
@@ -18,7 +20,7 @@ export default function WelcomePage() {
 		const token = localStorage.getItem('token');
 		const userStr = localStorage.getItem('user');
 		if (!token || !userStr) {
-			navigate('/auth');
+			navigate('/signup');
 			return;
 		}
 		setAuthToken(token);
@@ -65,7 +67,7 @@ export default function WelcomePage() {
 		localStorage.removeItem('token');
 		localStorage.removeItem('user');
 		setAuthToken(null);
-		navigate('/auth');
+		navigate('/signup');
 	}
 
 	const userLabel = useMemo(() => {
@@ -73,29 +75,108 @@ export default function WelcomePage() {
 		return `${user.name || ''} ${user.email ? `(${user.email})` : ''}`.trim();
 	}, [user]);
 
+	const getUserInitials = (name: string) => {
+		return name
+			.split(' ')
+			.map(word => word.charAt(0))
+			.join('')
+			.toUpperCase()
+			.slice(0, 2);
+	};
+
 	return (
-		<div style={{ padding: 24, display: 'flex', gap: 24, flexDirection: 'column' }}>
-			<h2>Welcome</h2>
-			{user && <div>User: {userLabel}</div>}
-			{error && <div style={{ color: 'red' }}>{error}</div>}
-			<div style={{ display: 'flex', gap: 8, flexDirection: 'column', maxWidth: 480 }}>
-				<input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Note title" />
-				<textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Note content" />
-				<button onClick={createNote}>Create Note</button>
-			</div>
-			<div>
-				<h3>Your Notes</h3>
-				<ul>
-					{notes.map((n) => (
-						<li key={n.id || n._id}>
-							<strong>{n.title}</strong>
-							<button style={{ marginLeft: 8 }} onClick={() => deleteNote(String(n.id || n._id))}>Delete</button>
-							<div>{n.content}</div>
-						</li>
-					))}
-				</ul>
-			</div>
-			<button onClick={logout}>Logout</button>
+		<div className="dashboard-container">
+			<header className="dashboard-header">
+				<div className="dashboard-header-content">
+					<div className="dashboard-title">
+						<img src={topLogo} alt="Logo" />
+						<h1>Note Dashboard</h1>
+					</div>
+					
+					<div className="user-info">
+						<div className="user-avatar">
+							{user?.name ? getUserInitials(user.name) : 'U'}
+						</div>
+						<div>
+							<div style={{ fontWeight: 600, color: 'var(--text-dark)' }}>
+								{user?.name || 'User'}
+							</div>
+							<div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+								{user?.email}
+							</div>
+						</div>
+						<button className="logout-btn" onClick={logout}>
+							Logout
+						</button>
+					</div>
+				</div>
+			</header>
+
+			<main className="dashboard-main">
+				{error && <div className="error">{error}</div>}
+				
+				<div className="dashboard-content">
+					<section className="create-note-section">
+						<h3>Create New Note</h3>
+						<form className="create-note-form" onSubmit={(e) => { e.preventDefault(); createNote(); }}>
+							<div className="form-group">
+								<label htmlFor="note-title">Note Title</label>
+								<input 
+									id="note-title"
+									type="text"
+									value={title} 
+									onChange={(e) => setTitle(e.target.value)} 
+									placeholder="Enter note title" 
+								/>
+							</div>
+							
+							<div className="form-group">
+								<label htmlFor="note-content">Note Content</label>
+								<textarea 
+									id="note-content"
+									value={content} 
+									onChange={(e) => setContent(e.target.value)} 
+									placeholder="Write your note content here..." 
+								/>
+							</div>
+							
+							<button type="submit">
+								Create Note
+							</button>
+						</form>
+					</section>
+
+					<section className="notes-section">
+						<h3>Your Notes ({notes.length})</h3>
+						
+						{notes.length === 0 ? (
+							<div className="empty-notes">
+								<h4>No notes yet</h4>
+								<p>Create your first note to get started!</p>
+							</div>
+						) : (
+							<ul className="notes-list">
+								{notes.map((note) => (
+									<li key={note.id || note._id} className="note-item">
+										<div className="note-header">
+											<h4 className="note-title">{note.title}</h4>
+											<div className="note-actions">
+												<button 
+													className="delete-btn"
+													onClick={() => deleteNote(String(note.id || note._id))}
+												>
+													Delete
+												</button>
+											</div>
+										</div>
+										<p className="note-content">{note.content}</p>
+									</li>
+								))}
+							</ul>
+						)}
+					</section>
+				</div>
+			</main>
 		</div>
 	);
 }
