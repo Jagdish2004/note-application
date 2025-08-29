@@ -11,19 +11,26 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigin = process.env.FRONTEND_ORIGIN || '*'; // for now allowing all origins
-// Allow localhost during dev if FRONTEND_ORIGIN is not set
+const allowedOriginsEnv = process.env.FRONTEND_ORIGIN || '';
+const allowedOrigins = allowedOriginsEnv
+  ? allowedOriginsEnv.split(',').map((s) => s.trim()).filter(Boolean)
+  : [];
+
 app.use(
   cors({
     origin: (origin, callback) => {
+      // Allow same-origin/server-side or tools without origin
       if (!origin) return callback(null, true);
-      if (allowedOrigin === '*' || origin === allowedOrigin) return callback(null, true);
+      // Allow configured origins
+      if (allowedOrigins.length > 0 && allowedOrigins.includes(origin)) return callback(null, true);
+      // Dev convenience
       if (origin.startsWith('http://localhost:5173') || origin.startsWith('http://127.0.0.1:5173')) {
         return callback(null, true);
       }
       return callback(new Error('Not allowed by CORS'));
     },
     credentials: false,
+    optionsSuccessStatus: 204,
   })
 );
 app.use(express.json());
