@@ -13,26 +13,36 @@ const app = express();
 
 const allowedOriginsEnv = process.env.FRONTEND_ORIGIN || '';
 const allowedOrigins = allowedOriginsEnv
-  ? allowedOriginsEnv.split(',').map((s) => s.trim()).filter(Boolean)
+  ? allowedOriginsEnv.split(',').map((s) => s.trim().replace(/\/$/, '')).filter(Boolean) // strip trailing /
   : [];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow same-origin/server-side or tools without origin
-      if (!origin) return callback(null, true);
-      // Allow configured origins
-      if (allowedOrigins.length > 0 && allowedOrigins.includes(origin)) return callback(null, true);
-      // Dev convenience
-      if (origin.startsWith('http://localhost:5173') || origin.startsWith('http://127.0.0.1:5173')) {
+      if (!origin) return callback(null, true); // allow same-origin / server-to-server
+
+      console.log("Incoming Origin:", origin);
+      console.log("Allowed Origins:", allowedOrigins);
+
+      if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-      return callback(new Error('Not allowed by CORS'));
+
+      if (
+        origin.startsWith("http://localhost:5173") ||
+        origin.startsWith("http://127.0.0.1:5173")
+      ) {
+        return callback(null, true);
+      }
+
+      // reject gracefully instead of 500
+      return callback(null, false);
     },
-    credentials: false,
+    credentials: true,
     optionsSuccessStatus: 204,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
