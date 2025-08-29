@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { api, setAuthToken } from '../lib/api';
 import topLogo from '../assets/top.svg';
 import '../pages.css';
+import '../index.css';
+
 
 type Note = { id?: string; _id?: string; title: string; content: string };
 
@@ -140,7 +142,7 @@ export default function WelcomePage() {
 								/>
 							</div>
 							
-							<button type="submit">
+							<button type="submit" className="primary-btn">
 								Create Note
 							</button>
 						</form>

@@ -5,6 +5,7 @@ import { api, setAuthToken } from '../lib/api';
 import { sendOTP } from '../services/otpService';
 import topLogo from '../assets/top.svg';
 import '../pages.css';
+import '../index.css';
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 

@@ -3,6 +3,7 @@ import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import WelcomePage from './pages/WelcomePage';
 import './pages.css';
+import './index.css';
 
 export default function App() {
 	return (

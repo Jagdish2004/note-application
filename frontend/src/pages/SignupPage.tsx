@@ -5,6 +5,7 @@ import { api, setAuthToken } from '../lib/api';
 import { sendOTP } from '../services/otpService';
 import topLogo from '../assets/top.svg';
 import '../pages.css';
+import '../index.css';
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 
@@ -120,7 +121,7 @@ export default function SignupPage() {
 						</div>
 						
 						<div className="auth-form">
-							<h2>Sign Up</h2>
+							<h2>Create Account</h2>
 							
 							{error && <div className="error">{error}</div>}
 							
