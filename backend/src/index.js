@@ -11,8 +11,21 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigin = process.env.FRONTEND_ORIGIN || '*';//for now allowing all origins
-app.use(cors({ origin: allowedOrigin, credentials: false }));
+const allowedOrigin = process.env.FRONTEND_ORIGIN || '*'; // for now allowing all origins
+// Allow localhost during dev if FRONTEND_ORIGIN is not set
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigin === '*' || origin === allowedOrigin) return callback(null, true);
+      if (origin.startsWith('http://localhost:5173') || origin.startsWith('http://127.0.0.1:5173')) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: false,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
