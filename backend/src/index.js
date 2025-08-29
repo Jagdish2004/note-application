@@ -36,6 +36,14 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+// Safety remap: if clients call without /api prefix in production, remap to /api
+app.use((req, _res, next) => {
+  if (req.url.startsWith('/auth/') || req.url === '/auth' || req.url.startsWith('/notes/')) {
+    req.url = `/api${req.url}`;
+  }
+  next();
+});
+
 const mongoUri = process.env.MONGODB_URI;
 mongoose
   .connect(mongoUri)
